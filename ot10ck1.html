@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>KIỂM TRA CÔNG NGHỆ 10</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        :root { --blue: #1a73e8; --bg: #f0f2f5; --text: #3c4043; }
+        body { font-family: sans-serif; background: var(--bg); line-height: 1.6; padding: 10px; margin: 0; }
+        .container { max-width: 650px; margin: 20px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: var(--blue); margin-bottom: 25px; }
+        .input-group { text-align: center; }
+        input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1.1rem; text-align: center; margin-bottom: 15px; }
+        .quiz-item { margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 10px; }
+        .question { font-weight: bold; margin-bottom: 12px; color: #202124; }
+        label { display: block; padding: 12px; margin: 8px 0; background: #f8f9fa; border-radius: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
+        label:hover { background: #e8f0fe; border-color: var(--blue); }
+        input[type="radio"] { margin-right: 12px; transform: scale(1.2); }
+        .btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-blue { background: var(--blue); }
+        .btn-blue:hover { background: #1557b0; }
+        .timer { position: fixed; top: 10px; right: 10px; background: #d93025; color: white; padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 1.2rem; z-index: 1000; display: none; }
+        #result { margin-top: 20px; padding: 30px; text-align: center; border-radius: 12px; display: none; background: #fff; border: 2px solid var(--blue); }
+        .score { font-size: 3rem; color: #d93025; font-weight: bold; margin: 15px 0; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div id="timer-display" class="timer">15:00</div>
+
+<div class="container" id="setup-box">
+    <h1>KIỂM TRA CÔNG NGHỆ 10</h1>
+    <div class="input-group">
+        <input type="text" id="std-name" placeholder="Nhập họ và tên của em...">
+        <button class="btn btn-blue" onclick="startQuiz()">BẮT ĐẦU LÀM BÀI</button>
+    </div>
+</div>
+
+<div class="container hidden" id="quiz-box">
+    <h2 id="display-name" style="text-align:center; color: #555;"></h2>
+    <div id="quiz-content"></div>
+    <button class="btn btn-blue" onclick="submitQuiz()">NỘP BÀI KIỂM TRA</button>
+</div>
+
+<div class="container hidden" id="result-box"></div>
+
+<script>
+    // 15 câu hỏi trích xuất từ file azota 10 ck1.docx của bạn
+    const bank = [
+        { q: "Khoa học là gì?", options: ["Ứng dụng nguyên lí vào sản xuất", "Hệ thống tri thức về bản chất, quy luật tự nhiên và xã hội", "Các công cụ máy móc hỗ trợ con người", "Quy trình tạo ra sản phẩm"], a: "Hệ thống tri thức về bản chất, quy luật tự nhiên và xã hội" },
+        { q: "Mối quan hệ giữa khoa học và công nghệ là?", options: ["Khoa học là cơ sở phát triển công nghệ, công nghệ thúc đẩy khoa học", "Không có mối liên hệ nào", "Công nghệ luôn có trước khoa học", "Khoa học chỉ nghiên cứu lí thuyết"], a: "Khoa học là cơ sở phát triển công nghệ, công nghệ thúc đẩy khoa học" },
+        { q: "Trong cấu trúc hệ thống kĩ thuật, bộ phận nào thay đổi trạng thái đầu vào?", options: ["Bộ phận đầu vào", "Bộ phận xử lí", "Bộ phận đầu ra", "Bộ phận truyền thông tin"], a: "Bộ phận xử lí" },
+        { q: "Trong máy điều hòa nhiệt độ, đâu là phần tử đầu vào?", options: ["Độ ẩm không khí", "Không khí lạnh tỏa ra", "Cảm biến nhiệt độ và tín hiệu điều khiển", "Cánh quạt của máy"], a: "Cảm biến nhiệt độ và tín hiệu điều khiển" },
+        { q: "Hệ thống tưới cây tự động dựa trên cảm biến độ ẩm là ví dụ của?", options: ["Hệ thống kĩ thuật hở", "Hệ thống kĩ thuật kín (có hồi tiếp)", "Quạt bàn cơ học", "Đèn pin cầm tay"], a: "Hệ thống tưới cây tự động dựa trên cảm biến độ ẩm đất" },
+        { q: "Công nghệ mô phỏng trí tuệ con người bằng máy móc là?", options: ["Công nghệ AI", "Công nghệ IoT", "Công nghệ Robot", "Công nghệ in 3D"], a: "Công nghệ trí tuệ nhân tạo" },
+        { q: "Ngành nghề nào liên quan trực tiếp đến công nghệ điện tử?", options: ["Thợ xây dựng", "Kĩ thuật viên sửa chữa máy tính", "Thợ rèn kim loại", "Kĩ sư lâm nghiệp"], a: "Kĩ thuật viên sửa chữa máy tính" },
+        { q: "Phương pháp gia công cắt gọt nào thường dùng tạo lỗ?", options: ["Tiện", "Phay", "Khoan", "Bào"], a: "Khoan" },
+        { q: "Kim loại đen bao gồm các loại nào?", options: ["Đồng, nhôm", "Vàng, bạc", "Gang và thép", "Chì và thiếc"], a: "Gang và thép" },
+        { q: "Trong mô hình 'Người - Công nghệ', yếu tố nào quyết định?", options: ["Công nghệ", "Máy móc", "Con người", "Phần mềm"], a: "Con người" },
+        { q: "Đặc điểm của một hệ thống kĩ thuật bị lỗi là?", options: ["Đầu ra đúng yêu cầu", "Các phần tử liên kết chặt", "Đầu ra không đạt mục tiêu hoặc không ổn định", "Năng lượng đầu vào ổn định"], a: "Đầu ra không đạt được mục tiêu hoặc không ổn định" },
+        { q: "Công nghệ CAD/CAM là công nghệ gì?", options: ["Thiết kế và chế tạo bằng máy tính", "Sản xuất nông nghiệp", "Y tế kĩ thuật cao", "Xây dựng cầu đường"], a: "Thiết kế và chế tạo có trợ giúp của máy tính" },
+        { q: "Công nghệ năng lượng tái tạo nghiên cứu nguồn nào?", options: ["Than đá, dầu mỏ", "Gió, mặt trời, thủy triều", "Khí đốt tự nhiên", "Quặng sắt"], a: "Gió, mặt trời, thủy triều" },
+        { q: "Cuộc cách mạng công nghiệp lần thứ 4 đặc trưng bởi?", options: ["Động cơ hơi nước", "Năng lượng điện", "Hệ thống thực-ảo, AI, IoT", "Cơ giới hóa"], a: "Sự kết hợp giữa hệ thống thực và ảo, Internet vạn vật (IoT), trí tuệ nhân tạo (AI)" },
+        { q: "Tác động tiêu cực của công nghệ đến môi trường là?", options: ["Tăng năng suất", "Ô nhiễm môi trường do chất thải", "Tiết kiệm tài nguyên", "Cải thiện đời sống"], a: "Gây ô nhiễm môi trường do chất thải từ quá trình sản xuất" }
+    ];
+
+    let timerInterval;
+    let questions = [];
+
+    function startQuiz() {
+        const name = document.getElementById('std-name').value.trim();
+        if (name.length < 2) {
+            alert("Em hãy nhập họ tên trước khi làm bài!");
+            return;
+        }
+
+        questions = [...bank].sort(() => 0.5 - Math.random());
+        document.getElementById('setup-box').classList.add('hidden');
+        document.getElementById('quiz-box').classList.remove('hidden');
+        document.getElementById('timer-display').style.display = 'block';
+        document.getElementById('display-name').innerText = "Học sinh: " + name.toUpperCase();
+
+        renderQuiz();
+        startTimer(15 * 60); // 15 phút
+    }
+
+    function renderQuiz() {
+        const display = document.getElementById('quiz-content');
+        display.innerHTML = '';
+        questions.forEach((item, i) => {
+            let opts = [...item.options].sort(() => 0.5 - Math.random());
+            display.innerHTML += `
+                <div class="quiz-item">
+                    <div class="question">Câu ${i+1}: ${item.q}</div>
+                    ${opts.map(opt => `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>`).join('')}
+                </div>`;
+        });
+    }
+
+    function startTimer(duration) {
+        let timer = duration;
+        timerInterval = setInterval(() => {
+            let minutes = Math.floor(timer / 60);
+            let seconds = timer % 60;
+            document.getElementById('timer-display').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            if (--timer < 0) {
+                clearInterval(timerInterval);
+                alert("Hết thời gian làm bài!");
+                submitQuiz();
+            }
+        }, 1000);
+    }
+
+    function submitQuiz() {
+        clearInterval(timerInterval);
+        let score = 0;
+        questions.forEach((item, i) => {
+            const sel = document.querySelector(`input[name="q${i}"]:checked`);
+            if (sel && sel.value.includes(item.a.substring(0, 5))) score++;
+        });
+
+        const finalScore = (score / questions.length * 10).toFixed(1);
+        const name = document.getElementById('std-name').value;
+        
+        document.getElementById('quiz-box').classList.add('hidden');
+        document.getElementById('timer-display').style.display = 'none';
+        
+        const res = document.getElementById('result-box');
+        res.classList.remove('hidden');
+        res.style.display = 'block';
+        res.innerHTML = `
+            <h2>KẾT QUẢ: ${name.toUpperCase()}</h2>
+            <div class="score">${finalScore} ĐIỂM</div>
+            <p>Đúng: ${score}/${questions.length} câu</p>
+            <button class="btn btn-blue" onclick="location.reload()" style="background:#6c757d">THOÁT</button>
+        `;
+        window.scrollTo(0, 0);
+    }
+</script>
+</body>
+</html>
