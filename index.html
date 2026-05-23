@@ -3,238 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giviso Student - Giao diện Mẫu</title>
-    <!-- Nhúng thư viện giao diện -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+    <title>E-TECH PRO | Modern Learning System</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8PH15MNTJ6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8PH15MNTJ6'); 
+    </script>
+
+    <!-- Google Fonts & FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- KaTeX: Thư viện hiển thị công thức Toán/Lý siêu tốc -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js" onload="renderMathInBody(document.body);"></script>
+
+    <!-- NẠP DỮ LIỆU TỪ CÁC FILE BÊN NGOÀI (CÁCH 1) -->
+    <script src="data10.js"></script>
+    <script src="data11.js"></script>
+    <script src="data12.js"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0f9ff; color: #1e293b; margin: 0; }
-        .student-active { background: #0284c7; color: white; box-shadow: 0 10px 20px -5px rgba(2, 132, 199, 0.4); }
-        .neo-card { background: white; border-radius: 2rem; border: 1px solid #e0f2fe; transition: all 0.3s ease; }
-        .neo-card:hover { transform: scale(1.02); box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.05); }
-        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); border-bottom: 2px solid #f0f9ff; }
-        .loader { border: 2px solid #f3f3f3; border-top: 2px solid #0284c7; border-radius: 50%; width: 16px; height: 16px; animation: spin 0.8s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        .modal-overlay { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); }
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg-site: #f8fafc;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --sidebar-w: 280px;
+            --radius: 12px;
+        }
+
+        * { box-sizing: border-box; transition: all 0.2s ease; }
+        body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-site); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* SIDEBAR SẠCH SẼ */
+        #sidebar { width: var(--sidebar-w); background: white; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; padding: 20px; z-index: 100; }
+        .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); letter-spacing: -1px; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        .user-info { background: #f1f5f9; padding: 12px; border-radius: var(--radius); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
+        #menu-list { flex: 1; overflow-y: auto; }
+        .menu-item { padding: 12px 15px; margin-bottom: 8px; border-radius: 10px; cursor: pointer; color: var(--text-sub); font-weight: 500; font-size: 0.95rem; line-height: 1.4; }
+        .menu-item:hover { background: #f1f5f9; color: var(--primary); }
+        .menu-item.active { background: #eef2ff; color: var(--primary); border-left: 3px solid var(--primary); font-weight: 700; }
+
+        /* KHÔNG GIAN ĐỌC BÀI HỌC */
+        #main-view { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; padding: 40px 20px; }
+        .content-card { background: white; width: 100%; max-width: 850px; padding: 60px; border-radius: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        h1 { font-size: 2.3rem; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; margin-top: 0; line-height: 1.3; }
+        
+        /* CÁC KHỐI STYLE CHUẨN ĐƯỢC SINH TỰ ĐỘNG */
+        .article-body p { font-size: 1.15rem; line-height: 1.75; color: #334155; margin: 16px 0; }
+        .article-body ul, .article-body ol { font-size: 1.15rem; line-height: 1.75; color: #334155; padding-left: 24px; margin: 20px 0; }
+        .article-body li { margin-bottom: 8px; }
+        
+        .box-definition, .box-warning, .box-summary { padding: 25px; border-radius: var(--radius); margin: 30px 0; font-size: 1.15rem; line-height: 1.7; }
+        .box-definition { background: #eef2ff; color: #3730a3; border-left: 5px solid var(--primary); }
+        .box-warning { background: #fff7ed; color: #9a3412; border-left: 5px solid #f97316; }
+        .box-summary { background: #f0fdf4; color: #166534; border: 1px dashed #22c55e; }
+        
+        table { width: 100%; border-collapse: collapse; margin: 30px 0; font-size: 1.05rem; }
+        table th, table td { padding: 15px; border: 1px solid #e2e8f0; text-align: left; line-height: 1.5; }
+        table th { background: #f8fafc; color: var(--primary); font-weight: 700; }
+
+        /* ĐIỀU HƯỚNG DƯỚI BÀI HỌC */
+        .nav-controls { display: flex; gap: 15px; margin-top: 40px; margin-bottom: 60px; width: 100%; max-width: 850px; }
+        .nav-btn { flex: 1; padding: 16px; border-radius: var(--radius); border: 1px solid #e2e8f0; background: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--text-sub); }
+        .nav-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: #f5f3ff; }
+        .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        /* NÚT TRÌNH CHIẾU FIXED GÓC MÀN HÌNH */
+        .btn-toggle-pres { position: fixed; top: 25px; right: 25px; z-index: 1002; padding: 12px 24px; border-radius: 100px; background: white; border: 1px solid #e2e8f0; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 8px; }
+        .btn-toggle-pres.exit-mode { background: #ef4444; color: white; border: none; }
+
+        /* CSS PHÓNG TO KHI BẬT CHẾ ĐỘ TRÌNH CHIẾU (PRESENTATION MODE) */
+        body.presentation-mode #sidebar, body.presentation-mode .nav-controls { display: none !important; }
+        body.presentation-mode #main-view { padding: 0; background: white; }
+        body.presentation-mode .content-card { max-width: 100%; width: 100vw; height: 100vh; border-radius: 0; padding: 80px 12%; box-shadow: none; overflow-y: auto; }
+        body.presentation-mode h1 { font-size: 3.8rem; text-align: center; margin-bottom: 50px; }
+        body.presentation-mode .article-body p, body.presentation-mode .article-body li, body.presentation-mode td, body.presentation-mode th, body.presentation-mode .box-definition, body.presentation-mode .box-warning, body.presentation-mode .box-summary { font-size: 2.2rem; line-height: 1.6; color: #000; }
+        body.presentation-mode .katex { font-size: 2.4rem !important; }
+
+        /* FORM ĐĂNG NHẬP */
+        #login-box { position: fixed; inset: 0; background: #f8fafc; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .login-card { background: white; padding: 50px; border-radius: 24px; width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .login-card input { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #e2e8f0; border-radius: 12px; outline: none; font-size: 1rem; }
+        .login-card button { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 20px; font-size: 1rem; }
+        .login-card button:hover { background: var(--primary-hover); }
     </style>
 </head>
 <body>
-    <div id="root"></div>
 
-    <script type="text/babel">
-        const { useState, useMemo, useRef } = React;
+    <!-- KHỐI ĐĂNG NHẬP -->
+    <div id="login-box">
+        <div class="login-card">
+            <div class="logo" style="justify-content:center; margin-bottom:10px;"><i class="fas fa-bolt"></i> E-TECH PRO</div>
+            <p style="color:var(--text-sub); margin-bottom:30px;">Hệ thống giáo trình Công nghệ 2026</p>
+            <input type="text" id="stu-name" placeholder="Họ và tên học sinh...">
+            <input type="password" id="access-code" placeholder="Mã truy cập lớp">
+            <button onclick="login()">Bắt đầu bài học</button>
+        </div>
+    </div>
 
-        // Cấu trúc Menu cố định của giao diện
-        const STUDENT_MENU = [
-            { id: 'baigiang', name: 'Bài học', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253', color: 'bg-sky-600' },
-            { id: 'thuvien', name: 'Thư viện', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10', color: 'bg-indigo-600' },
-            { id: 'kiemtra', name: 'Tự kiểm tra', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4', color: 'bg-rose-600' },
-            { id: 'nhatky', name: 'Cá nhân', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', color: 'bg-emerald-600' }
-        ];
+    <!-- THANH SIDEBAR -->
+    <div id="sidebar">
+        <div class="logo"><i class="fas fa-bolt"></i> E-TECH PRO</div>
+        <div class="user-info">
+            <span><i class="fas fa-user-circle"></i> <span id="user-display">---</span></span>
+            <i class="fas fa-power-off" onclick="logout()" style="cursor:pointer; color:#ef4444" title="Đăng xuất"></i>
+        </div>
+        <select id="grade-picker" onchange="renderMenu()" style="width:100%; padding:12px; border-radius:10px; border:1px solid #e2e8f0; margin-bottom:20px; font-weight:600; cursor:pointer; background:white; font-size:0.95rem;">
+            <option value="10">Công nghệ 10</option>
+            <option value="11">Công nghệ 11</option>
+            <option value="12" selected>Công nghệ 12</option>
+        </select>
+        <div id="menu-list"></div>
+    </div>
 
-        // Mẫu dữ liệu giả lập (Mock Data) để bạn thấy trước giao diện hiển thị
-        const MOCK_DATA = [
-            { id: '1', category: 'baigiang', content: 'Bài 1: Tổng quan về lập trình React cơ bản và cách sử dụng các Hooks như useState, useEffect.', fileName: 'React_Can_Ban.pdf', fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', displayDate: '23-05-2026', time: '14:30' },
-            { id: '2', category: 'thuvien', content: 'Tài liệu ôn thi học kỳ 2 môn Toán lớp 10 nâng cao kèm lời giải chi tiết.', fileName: 'Toan_10_Nang_Cao.pdf', fileUrl: '', displayDate: '22-05-2026', time: '09:15' },
-            { id: '3', category: 'kiemtra', content: 'Đề trắc nghiệm tự luyện môn Tiếng Anh - Chủ đề Thì tương lai đơn và tương lai gần.', fileName: 'English_Quiz.pdf', fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', displayDate: '20-05-2026', time: '20:00' }
-        ];
+    <!-- KHU VỰC HIỂN THỊ CHÍNH -->
+    <div id="main-view">
+        <button class="btn-toggle-pres" onclick="togglePresentation()"><i class="fas fa-expand"></i> TRÌNH CHIẾU</button>
+        
+        <div class="content-card" id="display"></div>
 
-        function App() {
-            // --- CÁC TRẠNG THÁI GIAO DIỆN (UI STATES) ---
-            const [data, setData] = useState(MOCK_DATA); // State chứa mảng dữ liệu chính
-            const [text, setText] = useState(""); // Nội dung text trong khung nhập liệu
-            const [file, setFile] = useState(null); // File đang được chọn để chuẩn bị gửi
-            const [uploading, setUploading] = useState(false); // Trạng thái hiệu ứng Loading khi bấm lưu
-            const [activeTab, setActiveTab] = useState('baigiang'); // Tab hiện tại đang chọn
-            const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
-            const [selectedFile, setSelectedFile] = useState(null); // Lưu item đang chọn để mở Modal xem tài liệu
-            const fileInputRef = useRef(null);
+        <!-- DIỀU HƯỚNG BÀI HỌC -->
+        <div class="nav-controls" id="nav-ui" style="display:none;">
+            <button class="nav-btn" id="prev-btn" onclick="changeLesson(-1)"><i class="fas fa-arrow-left"></i> Bài trước</button>
+            <button class="nav-btn" id="next-btn" onclick="changeLesson(1)">Bài tiếp theo <i class="fas fa-arrow-right"></i></button>
+        </div>
+    </div>
 
-            // --- BỘ LỌC TÌM KIẾM VÀ PHÂN TAB MÀN HÌNH ---
-            const filteredData = useMemo(() => {
-                let result = data.filter(d => d.category === activeTab);
-                if (searchTerm.trim()) {
-                    const s = searchTerm.toLowerCase();
-                    result = result.filter(d => (d.content || "").toLowerCase().includes(s) || (d.fileName || "").toLowerCase().includes(s));
-                }
-                return result;
-            }, [data, activeTab, searchTerm]);
+    <!-- LOGIC ĐIỀU KHIỂN HỆ THỐNG -->
+    <script>
+        let currentIndex = 0;
+        let currentGrade = "12";
+        const MASTER_CODE = "CN2026";
 
-            // --- NƠI CÀI ĐẶT LOGIC MỚI CỦA BẠN KHI BẤM GỬI ---
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                if (!text.trim() && !file) return;
-
-                setUploading(true); // Bật hiệu ứng xoay tròn tải dữ liệu
-
-                // MÔ PHỎNG: Tạo một object dữ liệu mới theo form cũ
-                setTimeout(() => {
-                    const now = new Date();
-                    const newItem = {
-                        id: Date.now().toString(),
-                        category: activeTab,
-                        content: text,
-                        fileName: file ? file.name : null,
-                        fileUrl: file ? 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' : '', // Link ảo để test xem file
-                        displayDate: `${now.getDate()}-${now.getMonth()+1}-${now.getFullYear()}`,
-                        time: now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
-                    };
-
-                    // Thêm vào danh sách hiện tại
-                    setData([newItem, ...data]);
-                    
-                    // Reset form nhập liệu
-                    setText("");
-                    setFile(null);
-                    setUploading(false); // Tắt loading
-                }, 1000); // Giả lập chờ mạng 1 giây
-            };
-
-            // --- NƠI CÀI ĐẶT LOGIC XÓA CARD ---
-            const handleDelete = (id) => {
-                if (confirm('Bạn chắc chắn muốn xóa mục này?')) {
-                    setData(data.filter(item => item.id !== id));
-                }
-            };
-
-            return (
-                <div className="flex min-h-screen">
-                    {/* SIDEBAR (THANH ĐIỀU HƯỚNG TRÊN DESKTOP) */}
-                    <aside className="w-72 bg-white border-r border-sky-100 fixed h-full z-40 hidden lg:block p-8">
-                        <div className="flex items-center gap-3 mb-12">
-                            <div className="w-10 h-10 bg-sky-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-sky-100">S</div>
-                            <h2 className="font-extrabold text-xl tracking-tight text-sky-900">Student Hub</h2>
-                        </div>
-                        <nav className="space-y-3">
-                            {STUDENT_MENU.map(item => (
-                                <button 
-                                    key={item.id} 
-                                    onClick={() => setActiveTab(item.id)}
-                                    className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-sm font-bold transition-all ${activeTab === item.id ? 'student-active' : 'text-slate-400 hover:bg-sky-50'}`}
-                                >
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon}/></svg>
-                                    {item.name}
-                                </button>
-                            ))}
-                        </nav>
-                    </aside>
-
-                    {/* MAIN CONTENT (KHU VỰC HIỂN THỊ NỘI DUNG CHÍNH) */}
-                    <main className="flex-1 lg:ml-72 p-6 lg:p-12 pb-80">
-                        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
-                            <div>
-                                <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-                                    {STUDENT_MENU.find(m => m.id === activeTab)?.name}
-                                </h2>
-                                <p className="text-slate-400 font-medium text-sm mt-1">Khám phá kho tri thức cá nhân</p>
-                            </div>
-                            
-                            {/* THANH TÌM KIẾM */}
-                            <div className="relative w-full md:w-80 group">
-                                <input 
-                                    type="text" 
-                                    placeholder="Tìm bài học, tài liệu..." 
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full bg-white border border-sky-100 rounded-[1.5rem] py-3.5 px-12 outline-none focus:ring-4 ring-sky-500/10 transition-all text-sm font-semibold"
-                                />
-                                <svg className="w-5 h-5 text-sky-300 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                            </div>
-                        </header>
-
-                        {/* DANH SÁCH THẺ GHI CHÚ/TÀI LIỆU */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {filteredData.map(note => (
-                                <div key={note.id} className="neo-card p-8 flex flex-col justify-between group">
-                                    <div>
-                                        <div className="flex justify-between items-start mb-6">
-                                            <span className="text-[10px] font-black text-sky-600 bg-sky-50 px-3 py-1 rounded-lg uppercase tracking-widest">
-                                                {note.displayDate} • {note.time}
-                                            </span>
-                                            <button onClick={() => handleDelete(note.id)} className="p-2 text-slate-200 hover:text-rose-500 transition-all opacity-0 group-hover:opacity-100">✕</button>
-                                        </div>
-                                        <p className="text-slate-700 text-[15px] font-semibold leading-relaxed mb-8 whitespace-pre-wrap">{note.content}</p>
-                                    </div>
-                                    
-                                    {/* NÚT XEM FILE ĐÍNH KÈM (NẾU CÓ) */}
-                                    {note.fileName && (
-                                        <div onClick={() => setSelectedFile(note)} className="p-4 bg-sky-50 rounded-[1.5rem] border border-sky-100 flex items-center gap-4 cursor-pointer hover:bg-sky-600 hover:text-white transition-all group/file shadow-inner">
-                                            <div className="w-10 h-10 bg-white text-sky-600 rounded-xl flex items-center justify-center shadow-sm">
-                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeWidth="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                                            </div>
-                                            <div className="flex-1 overflow-hidden pr-2">
-                                                <p className="text-[11px] font-black truncate">{note.fileName}</p>
-                                                <span className="text-[9px] font-bold opacity-60 uppercase tracking-tighter">Bấm để bắt đầu học</span>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </main>
-
-                    {/* MODAL BẬT LÊN XEM TÀI LIỆU KHÔNG RỜI TRANG */}
-                    {selectedFile && (
-                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 modal-overlay" onClick={() => setSelectedFile(null)}>
-                            <div className="bg-white w-full max-w-6xl h-[90vh] rounded-[3rem] overflow-hidden shadow-2xl relative flex flex-col" onClick={e => e.stopPropagation()}>
-                                <div className="p-6 border-b flex items-center justify-between">
-                                    <h3 className="font-black text-sm text-slate-700 pr-10">{selectedFile.fileName}</h3>
-                                    <button onClick={() => setSelectedFile(null)} className="p-3 hover:bg-slate-100 rounded-full transition-colors text-xl">✕</button>
-                                </div>
-                                <div className="flex-1 bg-slate-100">
-                                    {selectedFile.fileUrl ? (
-                                        <iframe src={selectedFile.fileUrl} className="w-full h-full bg-white border-none shadow-inner" title="Student Preview"></iframe>
-                                    ) : (
-                                        <div className="flex items-center justify-center h-full text-slate-400 font-bold">Mẫu: Link tài liệu trống hoặc chưa cấu hình URL</div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* KHU VỰC FORM NHẬP LIỆU CỐ ĐỊNH Ở ĐÁY MÀN HÌNH */}
-                    <div className="fixed bottom-0 lg:left-72 left-0 right-0 p-8 glass-header z-30">
-                        <div className="max-w-4xl mx-auto">
-                            <form onSubmit={handleSubmit} className="bg-white shadow-2xl rounded-[2.5rem] p-3 border border-sky-100 flex flex-col md:flex-row items-center gap-4">
-                                
-                                {/* Tag thông báo khi đã chọn file */}
-                                {file && (
-                                    <div className="px-5 py-2.5 bg-sky-600 text-white rounded-2xl text-[10px] font-black flex items-center gap-2 shadow-lg shadow-sky-100">
-                                        📎 {file.name.slice(0, 12)}...
-                                    </div>
-                                )}
-                                
-                                <textarea 
-                                    value={text} 
-                                    onChange={(e) => setText(e.target.value)} 
-                                    placeholder={uploading ? "Đang xử lý dữ liệu..." : `Tải tài liệu vào mục ${STUDENT_MENU.find(m => m.id === activeTab)?.name}...`} 
-                                    className="w-full p-4 outline-none resize-none text-[15px] font-bold h-12 bg-transparent" 
-                                    disabled={uploading} 
-                                />
-                                
-                                <div className="flex items-center gap-4 pr-3 w-full md:w-auto justify-between md:justify-end">
-                                    {/* Nút ẩn input chọn file mặc định */}
-                                    <input type="file" className="hidden" ref={fileInputRef} onChange={(e) => setFile(e.target.files[0])} />
-                                    
-                                    {/* Nút ghim giấy tùy biến giao diện */}
-                                    <button type="button" onClick={() => fileInputRef.current.click()} className="p-3 text-slate-400 hover:text-sky-600 transition-all text-xl">📎</button>
-                                    
-                                    {/* Nút gửi */}
-                                    <button disabled={uploading || (!text.trim() && !file)} className="h-12 w-full md:w-48 rounded-[1.25rem] flex items-center justify-center text-white font-black text-[11px] bg-sky-600 hover:bg-sky-700 shadow-xl shadow-sky-100 transition-all">
-                                        {uploading ? <div className="loader"></div> : "LƯU VÀO HỆ THỐNG"}
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            );
+        // 1. XỬ LÝ ĐĂNG NHẬP / ĐĂNG XUẤT
+        function login() {
+            const name = document.getElementById('stu-name').value;
+            const code = document.getElementById('access-code').value;
+            if(name.trim() && code === MASTER_CODE) {
+                localStorage.setItem('student_name', name);
+                localStorage.setItem('is_auth', 'true');
+                initApp();
+                gtag('event', 'login', {'student_name': name});
+            } else { alert("Thông tin mã lớp hoặc tên không đúng!"); }
         }
 
-        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+        function logout() { if(confirm("Bạn có chắc chắn muốn đăng xuất không?")) { localStorage.clear(); location.reload(); } }
+
+        function initApp() {
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('user-display').innerText = localStorage.getItem('student_name');
+            renderMenu();
+        }
+
+        // 2. DỰNG DANH SÁCH MENU BÊN SIDEBAR
+        function renderMenu() {
+            currentGrade = document.getElementById('grade-picker').value;
+            
+            // Dữ liệu được lấy tự động từ các file JS ngoài đã nạp ở thẻ <head>
+            const data = (currentGrade === "10") ? data10 : (currentGrade === "11") ? data11 : data12;
+            
+            if (!data || data.length === 0) {
+                document.getElementById('menu-list').innerHTML = "<p style='padding:15px; color:var(--text-sub)'>Sắp ra mắt...</p>";
+                document.getElementById('display').innerHTML = "<h1>Sắp ra mắt</h1><p>Nội dung đang được ban biên tập soạn thảo.</p>";
+                document.getElementById('nav-ui').style.display = 'none';
+                return;
+            }
+
+            document.getElementById('menu-list').innerHTML = data.map((l, i) => `
+                <div class="menu-item" id="menu-item-${i}" onclick="showLesson(${i})">
+                    ${l.title}
+                </div>
+            `).join('');
+            showLesson(0);
+        }
+
+        // 3. BỘ MÁY BIÊN DỊCH KHỐI DỮ LIỆU TỰ ĐỘNG (RENDER ENGINE)
+        function showLesson(index) {
+            currentIndex = index;
+            const data = (currentGrade === "10") ? data10 : (currentGrade === "11") ? data11 : data12;
+            if (!data[index]) return;
+            const lesson = data[index];
+            
+            let htmlContent = "";
+            
+            // Quét từng khối cấu trúc blocks và chuyển thành giao diện tương ứng
+            if (lesson.blocks && Array.isArray(lesson.blocks)) {
+                htmlContent = lesson.blocks.map(block => {
+                    switch(block.type) {
+                        case 'text':
+                            return `<p>${block.text}</p>`;
+                        
+                        case 'definition':
+                            return `<div class="box-definition"><strong>${block.title || 'Định nghĩa'}:</strong> ${block.text}</div>`;
+                        
+                        case 'warning':
+                            return `<div class="box-warning"><strong>${block.title || 'Lưu ý nguy hiểm'}:</strong> ${block.text}</div>`;
+                        
+                        case 'summary':
+                            return `<div class="box-summary"><strong>${block.title || 'Tóm tắt bài học'}:</strong> ${block.text}</div>`;
+                        
+                        case 'list':
+                            return `<ul>${block.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
+                        
+                        case 'table':
+                            const ths = block.headers.map(h => `<th>${h}</th>`).join('');
+                            const trs = block.rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('');
+                            return `<table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
+                            
+                        default:
+                            return "";
+                    }
+                }).join('');
+            } else {
+                // Phương án dự phòng nếu bài học viết chuỗi HTML cũ
+                htmlContent = lesson.content || "";
+            }
+
+            // Đổ toàn bộ chuỗi HTML sạch vào thẻ hiển thị
+            document.getElementById('display').innerHTML = `
+                <h1>${lesson.title}</h1>
+                <div class="article-body">${htmlContent}</div>
+                <div style="height: 10px;"></div>
+            `;
+
+            // Xử lý trạng thái nút bấm "Bài trước / Bài tiếp"
+            document.getElementById('nav-ui').style.display = 'flex';
+            document.getElementById('prev-btn').disabled = (index === 0);
+            document.getElementById('next-btn').disabled = (index === data.length - 1);
+            
+            // Đổi active màu sắc thanh menu sidebar
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            const activeItem = document.getElementById(`menu-item-${index}`);
+            if (activeItem) activeItem.classList.add('active');
+            
+            // Cuộn màn hình lên đầu trang
+            document.getElementById('main-view').scrollTo(0, 0);
+
+            // Ép KaTeX quét và vẽ lại công thức Toán/Lý dạng kí tự toán chuyên nghiệp
+            if (typeof renderMathInBody === "function") {
+                renderMathInBody(document.getElementById('display'));
+            }
+        }
+
+        // 4. ĐIỀU HƯỚNG CHUYỂN BÀI
+        function changeLesson(step) { showLesson(currentIndex + step); }
+
+        // 5. BẬT TẮT CHẾ ĐỘ TRÌNH CHIẾU TRÊN LỚP
+        function togglePresentation() {
+            const isPres = document.body.classList.toggle('presentation-mode');
+            const btn = document.querySelector('.btn-toggle-pres');
+            btn.innerHTML = isPres ? '<i class="fas fa-times"></i> THOÁT X' : '<i class="fas fa-expand"></i> TRÌNH CHIẾU';
+            btn.classList.toggle('exit-mode', isPres);
+            if(isPres) document.getElementById('main-view').scrollTop = 0;
+        }
+
+        // Kiểm tra phiên đăng nhập khi mở trang web
+        window.onload = () => { if(localStorage.getItem('is_auth') === 'true') initApp(); }
     </script>
 </body>
 </html>
