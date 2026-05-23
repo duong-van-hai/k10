@@ -2,141 +2,239 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>KIỂM TRA CÔNG NGHỆ 10</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giviso Student - Giao diện Mẫu</title>
+    <!-- Nhúng thư viện giao diện -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
     <style>
-        :root { --blue: #1a73e8; --bg: #f0f2f5; --text: #3c4043; }
-        body { font-family: sans-serif; background: var(--bg); line-height: 1.6; padding: 10px; margin: 0; }
-        .container { max-width: 650px; margin: 20px auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: var(--blue); margin-bottom: 25px; }
-        .input-group { text-align: center; }
-        input[type="text"] { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 1.1rem; text-align: center; margin-bottom: 15px; }
-        .quiz-item { margin-bottom: 30px; padding: 15px; border: 1px solid #eee; border-radius: 10px; }
-        .question { font-weight: bold; margin-bottom: 12px; color: #202124; }
-        label { display: block; padding: 12px; margin: 8px 0; background: #f8f9fa; border-radius: 8px; cursor: pointer; border: 1px solid transparent; transition: 0.2s; }
-        label:hover { background: #e8f0fe; border-color: var(--blue); }
-        input[type="radio"] { margin-right: 12px; transform: scale(1.2); }
-        .btn { width: 100%; padding: 16px; color: white; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
-        .btn-blue { background: var(--blue); }
-        .btn-blue:hover { background: #1557b0; }
-        .timer { position: fixed; top: 10px; right: 10px; background: #d93025; color: white; padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 1.2rem; z-index: 1000; display: none; }
-        #result { margin-top: 20px; padding: 30px; text-align: center; border-radius: 12px; display: none; background: #fff; border: 2px solid var(--blue); }
-        .score { font-size: 3rem; color: #d93025; font-weight: bold; margin: 15px 0; }
-        .hidden { display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0f9ff; color: #1e293b; margin: 0; }
+        .student-active { background: #0284c7; color: white; box-shadow: 0 10px 20px -5px rgba(2, 132, 199, 0.4); }
+        .neo-card { background: white; border-radius: 2rem; border: 1px solid #e0f2fe; transition: all 0.3s ease; }
+        .neo-card:hover { transform: scale(1.02); box-shadow: 0 25px 30px -10px rgba(0, 0, 0, 0.05); }
+        .glass-header { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(15px); border-bottom: 2px solid #f0f9ff; }
+        .loader { border: 2px solid #f3f3f3; border-top: 2px solid #0284c7; border-radius: 50%; width: 16px; height: 16px; animation: spin 0.8s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .modal-overlay { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(10px); }
     </style>
 </head>
 <body>
+    <div id="root"></div>
 
-<div id="timer-display" class="timer">15:00</div>
+    <script type="text/babel">
+        const { useState, useMemo, useRef } = React;
 
-<div class="container" id="setup-box">
-    <h1>KIỂM TRA CÔNG NGHỆ 10</h1>
-    <div class="input-group">
-        <input type="text" id="std-name" placeholder="Nhập họ và tên của em...">
-        <button class="btn btn-blue" onclick="startQuiz()">BẮT ĐẦU LÀM BÀI</button>
-    </div>
-</div>
+        // Cấu trúc Menu cố định của giao diện
+        const STUDENT_MENU = [
+            { id: 'baigiang', name: 'Bài học', icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253', color: 'bg-sky-600' },
+            { id: 'thuvien', name: 'Thư viện', icon: 'M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10', color: 'bg-indigo-600' },
+            { id: 'kiemtra', name: 'Tự kiểm tra', icon: 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4', color: 'bg-rose-600' },
+            { id: 'nhatky', name: 'Cá nhân', icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z', color: 'bg-emerald-600' }
+        ];
 
-<div class="container hidden" id="quiz-box">
-    <h2 id="display-name" style="text-align:center; color: #555;"></h2>
-    <div id="quiz-content"></div>
-    <button class="btn btn-blue" onclick="submitQuiz()">NỘP BÀI KIỂM TRA</button>
-</div>
+        // Mẫu dữ liệu giả lập (Mock Data) để bạn thấy trước giao diện hiển thị
+        const MOCK_DATA = [
+            { id: '1', category: 'baigiang', content: 'Bài 1: Tổng quan về lập trình React cơ bản và cách sử dụng các Hooks như useState, useEffect.', fileName: 'React_Can_Ban.pdf', fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', displayDate: '23-05-2026', time: '14:30' },
+            { id: '2', category: 'thuvien', content: 'Tài liệu ôn thi học kỳ 2 môn Toán lớp 10 nâng cao kèm lời giải chi tiết.', fileName: 'Toan_10_Nang_Cao.pdf', fileUrl: '', displayDate: '22-05-2026', time: '09:15' },
+            { id: '3', category: 'kiemtra', content: 'Đề trắc nghiệm tự luyện môn Tiếng Anh - Chủ đề Thì tương lai đơn và tương lai gần.', fileName: 'English_Quiz.pdf', fileUrl: 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', displayDate: '20-05-2026', time: '20:00' }
+        ];
 
-<div class="container hidden" id="result-box"></div>
+        function App() {
+            // --- CÁC TRẠNG THÁI GIAO DIỆN (UI STATES) ---
+            const [data, setData] = useState(MOCK_DATA); // State chứa mảng dữ liệu chính
+            const [text, setText] = useState(""); // Nội dung text trong khung nhập liệu
+            const [file, setFile] = useState(null); // File đang được chọn để chuẩn bị gửi
+            const [uploading, setUploading] = useState(false); // Trạng thái hiệu ứng Loading khi bấm lưu
+            const [activeTab, setActiveTab] = useState('baigiang'); // Tab hiện tại đang chọn
+            const [searchTerm, setSearchTerm] = useState(""); // Từ khóa tìm kiếm
+            const [selectedFile, setSelectedFile] = useState(null); // Lưu item đang chọn để mở Modal xem tài liệu
+            const fileInputRef = useRef(null);
 
-<script>
-    // 15 câu hỏi trích xuất từ file azota 10 ck1.docx của bạn
-    const bank = [
-        { q: "Khoa học là gì?", options: ["Ứng dụng nguyên lí vào sản xuất", "Hệ thống tri thức về bản chất, quy luật tự nhiên và xã hội", "Các công cụ máy móc hỗ trợ con người", "Quy trình tạo ra sản phẩm"], a: "Hệ thống tri thức về bản chất, quy luật tự nhiên và xã hội" },
-        { q: "Mối quan hệ giữa khoa học và công nghệ là?", options: ["Khoa học là cơ sở phát triển công nghệ, công nghệ thúc đẩy khoa học", "Không có mối liên hệ nào", "Công nghệ luôn có trước khoa học", "Khoa học chỉ nghiên cứu lí thuyết"], a: "Khoa học là cơ sở phát triển công nghệ, công nghệ thúc đẩy khoa học" },
-        { q: "Trong cấu trúc hệ thống kĩ thuật, bộ phận nào thay đổi trạng thái đầu vào?", options: ["Bộ phận đầu vào", "Bộ phận xử lí", "Bộ phận đầu ra", "Bộ phận truyền thông tin"], a: "Bộ phận xử lí" },
-        { q: "Trong máy điều hòa nhiệt độ, đâu là phần tử đầu vào?", options: ["Độ ẩm không khí", "Không khí lạnh tỏa ra", "Cảm biến nhiệt độ và tín hiệu điều khiển", "Cánh quạt của máy"], a: "Cảm biến nhiệt độ và tín hiệu điều khiển" },
-        { q: "Hệ thống tưới cây tự động dựa trên cảm biến độ ẩm là ví dụ của?", options: ["Hệ thống kĩ thuật hở", "Hệ thống kĩ thuật kín (có hồi tiếp)", "Quạt bàn cơ học", "Đèn pin cầm tay"], a: "Hệ thống tưới cây tự động dựa trên cảm biến độ ẩm đất" },
-        { q: "Công nghệ mô phỏng trí tuệ con người bằng máy móc là?", options: ["Công nghệ AI", "Công nghệ IoT", "Công nghệ Robot", "Công nghệ in 3D"], a: "Công nghệ trí tuệ nhân tạo" },
-        { q: "Ngành nghề nào liên quan trực tiếp đến công nghệ điện tử?", options: ["Thợ xây dựng", "Kĩ thuật viên sửa chữa máy tính", "Thợ rèn kim loại", "Kĩ sư lâm nghiệp"], a: "Kĩ thuật viên sửa chữa máy tính" },
-        { q: "Phương pháp gia công cắt gọt nào thường dùng tạo lỗ?", options: ["Tiện", "Phay", "Khoan", "Bào"], a: "Khoan" },
-        { q: "Kim loại đen bao gồm các loại nào?", options: ["Đồng, nhôm", "Vàng, bạc", "Gang và thép", "Chì và thiếc"], a: "Gang và thép" },
-        { q: "Trong mô hình 'Người - Công nghệ', yếu tố nào quyết định?", options: ["Công nghệ", "Máy móc", "Con người", "Phần mềm"], a: "Con người" },
-        { q: "Đặc điểm của một hệ thống kĩ thuật bị lỗi là?", options: ["Đầu ra đúng yêu cầu", "Các phần tử liên kết chặt", "Đầu ra không đạt mục tiêu hoặc không ổn định", "Năng lượng đầu vào ổn định"], a: "Đầu ra không đạt được mục tiêu hoặc không ổn định" },
-        { q: "Công nghệ CAD/CAM là công nghệ gì?", options: ["Thiết kế và chế tạo bằng máy tính", "Sản xuất nông nghiệp", "Y tế kĩ thuật cao", "Xây dựng cầu đường"], a: "Thiết kế và chế tạo có trợ giúp của máy tính" },
-        { q: "Công nghệ năng lượng tái tạo nghiên cứu nguồn nào?", options: ["Than đá, dầu mỏ", "Gió, mặt trời, thủy triều", "Khí đốt tự nhiên", "Quặng sắt"], a: "Gió, mặt trời, thủy triều" },
-        { q: "Cuộc cách mạng công nghiệp lần thứ 4 đặc trưng bởi?", options: ["Động cơ hơi nước", "Năng lượng điện", "Hệ thống thực-ảo, AI, IoT", "Cơ giới hóa"], a: "Sự kết hợp giữa hệ thống thực và ảo, Internet vạn vật (IoT), trí tuệ nhân tạo (AI)" },
-        { q: "Tác động tiêu cực của công nghệ đến môi trường là?", options: ["Tăng năng suất", "Ô nhiễm môi trường do chất thải", "Tiết kiệm tài nguyên", "Cải thiện đời sống"], a: "Gây ô nhiễm môi trường do chất thải từ quá trình sản xuất" }
-    ];
+            // --- BỘ LỌC TÌM KIẾM VÀ PHÂN TAB MÀN HÌNH ---
+            const filteredData = useMemo(() => {
+                let result = data.filter(d => d.category === activeTab);
+                if (searchTerm.trim()) {
+                    const s = searchTerm.toLowerCase();
+                    result = result.filter(d => (d.content || "").toLowerCase().includes(s) || (d.fileName || "").toLowerCase().includes(s));
+                }
+                return result;
+            }, [data, activeTab, searchTerm]);
 
-    let timerInterval;
-    let questions = [];
+            // --- NƠI CÀI ĐẶT LOGIC MỚI CỦA BẠN KHI BẤM GỬI ---
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (!text.trim() && !file) return;
 
-    function startQuiz() {
-        const name = document.getElementById('std-name').value.trim();
-        if (name.length < 2) {
-            alert("Em hãy nhập họ tên trước khi làm bài!");
-            return;
+                setUploading(true); // Bật hiệu ứng xoay tròn tải dữ liệu
+
+                // MÔ PHỎNG: Tạo một object dữ liệu mới theo form cũ
+                setTimeout(() => {
+                    const now = new Date();
+                    const newItem = {
+                        id: Date.now().toString(),
+                        category: activeTab,
+                        content: text,
+                        fileName: file ? file.name : null,
+                        fileUrl: file ? 'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf' : '', // Link ảo để test xem file
+                        displayDate: `${now.getDate()}-${now.getMonth()+1}-${now.getFullYear()}`,
+                        time: now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' })
+                    };
+
+                    // Thêm vào danh sách hiện tại
+                    setData([newItem, ...data]);
+                    
+                    // Reset form nhập liệu
+                    setText("");
+                    setFile(null);
+                    setUploading(false); // Tắt loading
+                }, 1000); // Giả lập chờ mạng 1 giây
+            };
+
+            // --- NƠI CÀI ĐẶT LOGIC XÓA CARD ---
+            const handleDelete = (id) => {
+                if (confirm('Bạn chắc chắn muốn xóa mục này?')) {
+                    setData(data.filter(item => item.id !== id));
+                }
+            };
+
+            return (
+                <div className="flex min-h-screen">
+                    {/* SIDEBAR (THANH ĐIỀU HƯỚNG TRÊN DESKTOP) */}
+                    <aside className="w-72 bg-white border-r border-sky-100 fixed h-full z-40 hidden lg:block p-8">
+                        <div className="flex items-center gap-3 mb-12">
+                            <div className="w-10 h-10 bg-sky-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg shadow-sky-100">S</div>
+                            <h2 className="font-extrabold text-xl tracking-tight text-sky-900">Student Hub</h2>
+                        </div>
+                        <nav className="space-y-3">
+                            {STUDENT_MENU.map(item => (
+                                <button 
+                                    key={item.id} 
+                                    onClick={() => setActiveTab(item.id)}
+                                    className={`w-full flex items-center gap-4 px-5 py-4 rounded-2xl text-sm font-bold transition-all ${activeTab === item.id ? 'student-active' : 'text-slate-400 hover:bg-sky-50'}`}
+                                >
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={item.icon}/></svg>
+                                    {item.name}
+                                </button>
+                            ))}
+                        </nav>
+                    </aside>
+
+                    {/* MAIN CONTENT (KHU VỰC HIỂN THỊ NỘI DUNG CHÍNH) */}
+                    <main className="flex-1 lg:ml-72 p-6 lg:p-12 pb-80">
+                        <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+                            <div>
+                                <h2 className="text-3xl font-black text-slate-900 tracking-tight">
+                                    {STUDENT_MENU.find(m => m.id === activeTab)?.name}
+                                </h2>
+                                <p className="text-slate-400 font-medium text-sm mt-1">Khám phá kho tri thức cá nhân</p>
+                            </div>
+                            
+                            {/* THANH TÌM KIẾM */}
+                            <div className="relative w-full md:w-80 group">
+                                <input 
+                                    type="text" 
+                                    placeholder="Tìm bài học, tài liệu..." 
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="w-full bg-white border border-sky-100 rounded-[1.5rem] py-3.5 px-12 outline-none focus:ring-4 ring-sky-500/10 transition-all text-sm font-semibold"
+                                />
+                                <svg className="w-5 h-5 text-sky-300 absolute left-4 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                            </div>
+                        </header>
+
+                        {/* DANH SÁCH THẺ GHI CHÚ/TÀI LIỆU */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {filteredData.map(note => (
+                                <div key={note.id} className="neo-card p-8 flex flex-col justify-between group">
+                                    <div>
+                                        <div className="flex justify-between items-start mb-6">
+                                            <span className="text-[10px] font-black text-sky-600 bg-sky-50 px-3 py-1 rounded-lg uppercase tracking-widest">
+                                                {note.displayDate} • {note.time}
+                                            </span>
+                                            <button onClick={() => handleDelete(note.id)} className="p-2 text-slate-200 hover:text-rose-500 transition-all opacity-0 group-hover:opacity-100">✕</button>
+                                        </div>
+                                        <p className="text-slate-700 text-[15px] font-semibold leading-relaxed mb-8 whitespace-pre-wrap">{note.content}</p>
+                                    </div>
+                                    
+                                    {/* NÚT XEM FILE ĐÍNH KÈM (NẾU CÓ) */}
+                                    {note.fileName && (
+                                        <div onClick={() => setSelectedFile(note)} className="p-4 bg-sky-50 rounded-[1.5rem] border border-sky-100 flex items-center gap-4 cursor-pointer hover:bg-sky-600 hover:text-white transition-all group/file shadow-inner">
+                                            <div className="w-10 h-10 bg-white text-sky-600 rounded-xl flex items-center justify-center shadow-sm">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeWidth="2.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                                            </div>
+                                            <div className="flex-1 overflow-hidden pr-2">
+                                                <p className="text-[11px] font-black truncate">{note.fileName}</p>
+                                                <span className="text-[9px] font-bold opacity-60 uppercase tracking-tighter">Bấm để bắt đầu học</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                    </main>
+
+                    {/* MODAL BẬT LÊN XEM TÀI LIỆU KHÔNG RỜI TRANG */}
+                    {selectedFile && (
+                        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 modal-overlay" onClick={() => setSelectedFile(null)}>
+                            <div className="bg-white w-full max-w-6xl h-[90vh] rounded-[3rem] overflow-hidden shadow-2xl relative flex flex-col" onClick={e => e.stopPropagation()}>
+                                <div className="p-6 border-b flex items-center justify-between">
+                                    <h3 className="font-black text-sm text-slate-700 pr-10">{selectedFile.fileName}</h3>
+                                    <button onClick={() => setSelectedFile(null)} className="p-3 hover:bg-slate-100 rounded-full transition-colors text-xl">✕</button>
+                                </div>
+                                <div className="flex-1 bg-slate-100">
+                                    {selectedFile.fileUrl ? (
+                                        <iframe src={selectedFile.fileUrl} className="w-full h-full bg-white border-none shadow-inner" title="Student Preview"></iframe>
+                                    ) : (
+                                        <div className="flex items-center justify-center h-full text-slate-400 font-bold">Mẫu: Link tài liệu trống hoặc chưa cấu hình URL</div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* KHU VỰC FORM NHẬP LIỆU CỐ ĐỊNH Ở ĐÁY MÀN HÌNH */}
+                    <div className="fixed bottom-0 lg:left-72 left-0 right-0 p-8 glass-header z-30">
+                        <div className="max-w-4xl mx-auto">
+                            <form onSubmit={handleSubmit} className="bg-white shadow-2xl rounded-[2.5rem] p-3 border border-sky-100 flex flex-col md:flex-row items-center gap-4">
+                                
+                                {/* Tag thông báo khi đã chọn file */}
+                                {file && (
+                                    <div className="px-5 py-2.5 bg-sky-600 text-white rounded-2xl text-[10px] font-black flex items-center gap-2 shadow-lg shadow-sky-100">
+                                        📎 {file.name.slice(0, 12)}...
+                                    </div>
+                                )}
+                                
+                                <textarea 
+                                    value={text} 
+                                    onChange={(e) => setText(e.target.value)} 
+                                    placeholder={uploading ? "Đang xử lý dữ liệu..." : `Tải tài liệu vào mục ${STUDENT_MENU.find(m => m.id === activeTab)?.name}...`} 
+                                    className="w-full p-4 outline-none resize-none text-[15px] font-bold h-12 bg-transparent" 
+                                    disabled={uploading} 
+                                />
+                                
+                                <div className="flex items-center gap-4 pr-3 w-full md:w-auto justify-between md:justify-end">
+                                    {/* Nút ẩn input chọn file mặc định */}
+                                    <input type="file" className="hidden" ref={fileInputRef} onChange={(e) => setFile(e.target.files[0])} />
+                                    
+                                    {/* Nút ghim giấy tùy biến giao diện */}
+                                    <button type="button" onClick={() => fileInputRef.current.click()} className="p-3 text-slate-400 hover:text-sky-600 transition-all text-xl">📎</button>
+                                    
+                                    {/* Nút gửi */}
+                                    <button disabled={uploading || (!text.trim() && !file)} className="h-12 w-full md:w-48 rounded-[1.25rem] flex items-center justify-center text-white font-black text-[11px] bg-sky-600 hover:bg-sky-700 shadow-xl shadow-sky-100 transition-all">
+                                        {uploading ? <div className="loader"></div> : "LƯU VÀO HỆ THỐNG"}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            );
         }
 
-        questions = [...bank].sort(() => 0.5 - Math.random());
-        document.getElementById('setup-box').classList.add('hidden');
-        document.getElementById('quiz-box').classList.remove('hidden');
-        document.getElementById('timer-display').style.display = 'block';
-        document.getElementById('display-name').innerText = "Học sinh: " + name.toUpperCase();
-
-        renderQuiz();
-        startTimer(15 * 60); // 15 phút
-    }
-
-    function renderQuiz() {
-        const display = document.getElementById('quiz-content');
-        display.innerHTML = '';
-        questions.forEach((item, i) => {
-            let opts = [...item.options].sort(() => 0.5 - Math.random());
-            display.innerHTML += `
-                <div class="quiz-item">
-                    <div class="question">Câu ${i+1}: ${item.q}</div>
-                    ${opts.map(opt => `<label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label>`).join('')}
-                </div>`;
-        });
-    }
-
-    function startTimer(duration) {
-        let timer = duration;
-        timerInterval = setInterval(() => {
-            let minutes = Math.floor(timer / 60);
-            let seconds = timer % 60;
-            document.getElementById('timer-display').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-            if (--timer < 0) {
-                clearInterval(timerInterval);
-                alert("Hết thời gian làm bài!");
-                submitQuiz();
-            }
-        }, 1000);
-    }
-
-    function submitQuiz() {
-        clearInterval(timerInterval);
-        let score = 0;
-        questions.forEach((item, i) => {
-            const sel = document.querySelector(`input[name="q${i}"]:checked`);
-            if (sel && sel.value.includes(item.a.substring(0, 5))) score++;
-        });
-
-        const finalScore = (score / questions.length * 10).toFixed(1);
-        const name = document.getElementById('std-name').value;
-        
-        document.getElementById('quiz-box').classList.add('hidden');
-        document.getElementById('timer-display').style.display = 'none';
-        
-        const res = document.getElementById('result-box');
-        res.classList.remove('hidden');
-        res.style.display = 'block';
-        res.innerHTML = `
-            <h2>KẾT QUẢ: ${name.toUpperCase()}</h2>
-            <div class="score">${finalScore} ĐIỂM</div>
-            <p>Đúng: ${score}/${questions.length} câu</p>
-            <button class="btn btn-blue" onclick="location.reload()" style="background:#6c757d">THOÁT</button>
-        `;
-        window.scrollTo(0, 0);
-    }
-</script>
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
 </body>
 </html>
