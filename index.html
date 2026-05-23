@@ -14,11 +14,11 @@
       gtag('config', 'G-8PH15MNTJ6'); 
     </script>
 
-    <!-- Google Fonts & FontAwesome -->
+    <!-- Google Fonts & FontAwesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
-    <!-- KaTeX: Thư viện hiển thị công thức Toán/Lý siêu tốc -->
+    <!-- KaTeX Thư viện hiển thị công thức Toán/Lý siêu tốc -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex/contrib/auto-render.min.js" onload="renderMathInBody(document.body);"></script>
@@ -42,7 +42,7 @@
         * { box-sizing: border-box; transition: all 0.2s ease; }
         body { margin: 0; font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg-site); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
 
-        /* SIDEBAR SẠCH SẼ */
+        /* THANH SIDEBAR ĐIỀU HƯỚNG */
         #sidebar { width: var(--sidebar-w); background: white; border-right: 1px solid #e2e8f0; display: flex; flex-direction: column; padding: 20px; z-index: 100; }
         .logo { font-weight: 800; font-size: 1.4rem; color: var(--primary); letter-spacing: -1px; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
         .user-info { background: #f1f5f9; padding: 12px; border-radius: var(--radius); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
@@ -51,12 +51,11 @@
         .menu-item:hover { background: #f1f5f9; color: var(--primary); }
         .menu-item.active { background: #eef2ff; color: var(--primary); border-left: 3px solid var(--primary); font-weight: 700; }
 
-        /* KHÔNG GIAN ĐỌC BÀI HỌC */
+        /* KHÔNG GIAN BÀI GIẢNG CHÍNH */
         #main-view { flex: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; scroll-behavior: smooth; padding: 40px 20px; }
         .content-card { background: white; width: 100%; max-width: 850px; padding: 60px; border-radius: 24px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        h1 { font-size: 2.3rem; font-weight: 700; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; margin-top: 0; line-height: 1.3; }
         
-        /* CÁC KHỐI STYLE CHUẨN ĐƯỢC SINH TỰ ĐỘNG */
+        /* CÁC THÀNH PHẦN NỘI DUNG */
         .article-body p { font-size: 1.15rem; line-height: 1.75; color: #334155; margin: 16px 0; }
         .article-body ul, .article-body ol { font-size: 1.15rem; line-height: 1.75; color: #334155; padding-left: 24px; margin: 20px 0; }
         .article-body li { margin-bottom: 8px; }
@@ -70,7 +69,7 @@
         table th, table td { padding: 15px; border: 1px solid #e2e8f0; text-align: left; line-height: 1.5; }
         table th { background: #f8fafc; color: var(--primary); font-weight: 700; }
 
-        /* ĐIỀU HƯỚNG DƯỚI BÀI HỌC */
+        /* THANH ĐIỀU HƯỚNG DƯỚI ĐÁY */
         .nav-controls { display: flex; gap: 15px; margin-top: 40px; margin-bottom: 60px; width: 100%; max-width: 850px; }
         .nav-btn { flex: 1; padding: 16px; border-radius: var(--radius); border: 1px solid #e2e8f0; background: white; cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--text-sub); }
         .nav-btn:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); background: #f5f3ff; }
@@ -80,15 +79,14 @@
         .btn-toggle-pres { position: fixed; top: 25px; right: 25px; z-index: 1002; padding: 12px 24px; border-radius: 100px; background: white; border: 1px solid #e2e8f0; cursor: pointer; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: flex; align-items: center; gap: 8px; }
         .btn-toggle-pres.exit-mode { background: #ef4444; color: white; border: none; }
 
-        /* CSS PHÓNG TO KHI BẬT CHẾ ĐỘ TRÌNH CHIẾU (PRESENTATION MODE) */
-        body.presentation-mode #sidebar, body.presentation-mode .nav-controls { display: none !important; }
+        /* CẤU HÌNH PHÓNG TO TOÀN MÀN HÌNH CHẾ ĐỘ TRÌNH CHIẾU */
+        body.presentation-mode #sidebar, body.presentation-mode .nav-controls, body.presentation-mode #slide-tabs { display: none !important; }
         body.presentation-mode #main-view { padding: 0; background: white; }
         body.presentation-mode .content-card { max-width: 100%; width: 100vw; height: 100vh; border-radius: 0; padding: 80px 12%; box-shadow: none; overflow-y: auto; }
-        body.presentation-mode h1 { font-size: 3.8rem; text-align: center; margin-bottom: 50px; }
         body.presentation-mode .article-body p, body.presentation-mode .article-body li, body.presentation-mode td, body.presentation-mode th, body.presentation-mode .box-definition, body.presentation-mode .box-warning, body.presentation-mode .box-summary { font-size: 2.2rem; line-height: 1.6; color: #000; }
         body.presentation-mode .katex { font-size: 2.4rem !important; }
 
-        /* FORM ĐĂNG NHẬP */
+        /* CỬA SỔ ĐĂNG NHẬP LỚP HỌC */
         #login-box { position: fixed; inset: 0; background: #f8fafc; z-index: 9999; display: flex; align-items: center; justify-content: center; }
         .login-card { background: white; padding: 50px; border-radius: 24px; width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
         .login-card input { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #e2e8f0; border-radius: 12px; outline: none; font-size: 1rem; }
@@ -98,7 +96,7 @@
 </head>
 <body>
 
-    <!-- KHỐI ĐĂNG NHẬP -->
+    <!-- MÀN HÌNH ĐĂNG NHẬP -->
     <div id="login-box">
         <div class="login-card">
             <div class="logo" style="justify-content:center; margin-bottom:10px;"><i class="fas fa-bolt"></i> E-TECH PRO</div>
@@ -109,7 +107,7 @@
         </div>
     </div>
 
-    <!-- THANH SIDEBAR -->
+    <!-- SIDEBAR QUẢN LÝ MENU -->
     <div id="sidebar">
         <div class="logo"><i class="fas fa-bolt"></i> E-TECH PRO</div>
         <div class="user-info">
@@ -124,26 +122,30 @@
         <div id="menu-list"></div>
     </div>
 
-    <!-- KHU VỰC HIỂN THỊ CHÍNH -->
+    <!-- VÙNG HIỂN THỊ LÊN LỚP -->
     <div id="main-view">
         <button class="btn-toggle-pres" onclick="togglePresentation()"><i class="fas fa-expand"></i> TRÌNH CHIẾU</button>
         
+        <!-- THANH ĐIỀU HƯỚNG NHANH CÁC SLIDE (1, 2, 3, 4, 5) -->
+        <div id="slide-tabs" style="display:none; gap:10px; margin-bottom:24px; width:100%; max-width:850px; justify-content: center; flex-wrap: wrap;"></div>
+        
         <div class="content-card" id="display"></div>
 
-        <!-- DIỀU HƯỚNG BÀI HỌC -->
+        <!-- NÚT DI CHUYỂN DƯỚI ĐÁY -->
         <div class="nav-controls" id="nav-ui" style="display:none;">
-            <button class="nav-btn" id="prev-btn" onclick="changeLesson(-1)"><i class="fas fa-arrow-left"></i> Bài trước</button>
-            <button class="nav-btn" id="next-btn" onclick="changeLesson(1)">Bài tiếp theo <i class="fas fa-arrow-right"></i></button>
+            <button class="nav-btn" id="prev-btn" onclick="changeLesson(-1)"><i class="fas fa-arrow-left"></i> Bài trước / Slide trước</button>
+            <button class="nav-btn" id="next-btn" onclick="changeLesson(1)">Slide kế tiếp / Bài sau <i class="fas fa-arrow-right"></i></button>
         </div>
     </div>
 
-    <!-- LOGIC ĐIỀU KHIỂN HỆ THỐNG -->
+    <!-- TOÀN BỘ LOGIC ĐIỀU HƯỚNG & BIÊN DỊCH TỰ ĐỘNG -->
     <script>
-        let currentIndex = 0;
+        let currentIndex = 0;   // Chỉ số bài học đang chọn
+        let currentSlide = 1;   // Số trang slide đang đứng
         let currentGrade = "12";
         const MASTER_CODE = "CN2026";
 
-        // 1. XỬ LÝ ĐĂNG NHẬP / ĐĂNG XUẤT
+        // 1. CƠ CHẾ XÁC THỰC NGƯỜI DÙNG
         function login() {
             const name = document.getElementById('stu-name').value;
             const code = document.getElementById('access-code').value;
@@ -152,10 +154,10 @@
                 localStorage.setItem('is_auth', 'true');
                 initApp();
                 gtag('event', 'login', {'student_name': name});
-            } else { alert("Thông tin mã lớp hoặc tên không đúng!"); }
+            } else { alert("Mã truy cập lớp hoặc tên không chính xác!"); }
         }
 
-        function logout() { if(confirm("Bạn có chắc chắn muốn đăng xuất không?")) { localStorage.clear(); location.reload(); } }
+        function logout() { if(confirm("Xác nhận hành động đăng xuất hệ thống?")) { localStorage.clear(); location.reload(); } }
 
         function initApp() {
             document.getElementById('login-box').style.display = 'none';
@@ -163,100 +165,154 @@
             renderMenu();
         }
 
-        // 2. DỰNG DANH SÁCH MENU BÊN SIDEBAR
+        // 2. SINH THÀNH MENU DỌC THEO KHỐI LỚP
         function renderMenu() {
             currentGrade = document.getElementById('grade-picker').value;
-            
-            // Dữ liệu được lấy tự động từ các file JS ngoài đã nạp ở thẻ <head>
             const data = (currentGrade === "10") ? data10 : (currentGrade === "11") ? data11 : data12;
             
             if (!data || data.length === 0) {
-                document.getElementById('menu-list').innerHTML = "<p style='padding:15px; color:var(--text-sub)'>Sắp ra mắt...</p>";
-                document.getElementById('display').innerHTML = "<h1>Sắp ra mắt</h1><p>Nội dung đang được ban biên tập soạn thảo.</p>";
+                document.getElementById('menu-list').innerHTML = "<p style='padding:15px; color:var(--text-sub)'>Chưa có dữ liệu...</p>";
+                document.getElementById('display').innerHTML = "<h1>Hệ thống trống</h1><p>Nội dung đang được cập nhật thêm.</p>";
+                document.getElementById('slide-tabs').style.display = 'none';
                 document.getElementById('nav-ui').style.display = 'none';
                 return;
             }
 
             document.getElementById('menu-list').innerHTML = data.map((l, i) => `
-                <div class="menu-item" id="menu-item-${i}" onclick="showLesson(${i})">
+                <div class="menu-item" id="menu-item-${i}" onclick="showLesson(${i}, 1)">
                     ${l.title}
                 </div>
             `).join('');
-            showLesson(0);
+            
+            // Mặc định luôn nạp Bài đầu tiên (index 0) và Trang đầu tiên (slide 1)
+            showLesson(0, 1);
         }
 
-        // 3. BỘ MÁY BIÊN DỊCH KHỐI DỮ LIỆU TỰ ĐỘNG (RENDER ENGINE)
-        function showLesson(index) {
+        // 3. CƠ CHẾ CHIA SLIDE VÀ PHÂN TÍCH KHỐI KHẢO SÁT (RENDER ENGINE CO GIÃN)
+        function showLesson(index, slideNum = 1) {
             currentIndex = index;
+            currentSlide = slideNum;
+            
             const data = (currentGrade === "10") ? data10 : (currentGrade === "11") ? data11 : data12;
             if (!data[index]) return;
             const lesson = data[index];
             
-            let htmlContent = "";
-            
-            // Quét từng khối cấu trúc blocks và chuyển thành giao diện tương ứng
+            // Đo đạc tổng số slide lớn nhất có trong mảng blocks của bài học
+            let maxSlide = 1;
             if (lesson.blocks && Array.isArray(lesson.blocks)) {
-                htmlContent = lesson.blocks.map(block => {
+                lesson.blocks.forEach(b => { if(b.slide > maxSlide) maxSlide = b.slide; });
+            }
+
+            // Sinh các nút tab chuyển đổi số trang slide tương ứng lên đầu card
+            const slideTabs = document.getElementById('slide-tabs');
+            if (lesson.blocks && Array.isArray(lesson.blocks)) {
+                slideTabs.style.display = 'flex';
+                slideTabs.innerHTML = Array.from({length: maxSlide}, (_, i) => i + 1).map(num => `
+                    <button onclick="showLesson(${index}, ${num})" style="
+                        padding: 8px 18px; 
+                        border-radius: 8px; 
+                        border: 1px solid ${num === currentSlide ? 'var(--primary)' : '#e2e8f0'};
+                        background: ${num === currentSlide ? 'var(--primary)' : 'white'};
+                        color: ${num === currentSlide ? 'white' : 'var(--text-sub)'};
+                        font-weight: 700;
+                        cursor: pointer;
+                        font-size: 0.9rem;
+                    ">Slide ${num}</button>
+                `).join('');
+            } else {
+                slideTabs.style.display = 'none';
+            }
+
+            // Chạy vòng lặp map để gom code HTML của riêng slide đang chọn
+            let htmlContent = "";
+            if (lesson.blocks && Array.isArray(lesson.blocks)) {
+                const activeBlocks = lesson.blocks.filter(b => !b.slide || b.slide === currentSlide);
+                
+                htmlContent = activeBlocks.map(block => {
                     switch(block.type) {
                         case 'text':
                             return `<p>${block.text}</p>`;
-                        
                         case 'definition':
                             return `<div class="box-definition"><strong>${block.title || 'Định nghĩa'}:</strong> ${block.text}</div>`;
-                        
                         case 'warning':
                             return `<div class="box-warning"><strong>${block.title || 'Lưu ý nguy hiểm'}:</strong> ${block.text}</div>`;
-                        
                         case 'summary':
                             return `<div class="box-summary"><strong>${block.title || 'Tóm tắt bài học'}:</strong> ${block.text}</div>`;
-                        
                         case 'list':
                             return `<ul>${block.items.map(item => `<li>${item}</li>`).join('')}</ul>`;
-                        
                         case 'table':
                             const ths = block.headers.map(h => `<th>${h}</th>`).join('');
                             const trs = block.rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('');
                             return `<table><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table>`;
-                            
                         default:
                             return "";
                     }
                 }).join('');
             } else {
-                // Phương án dự phòng nếu bài học viết chuỗi HTML cũ
                 htmlContent = lesson.content || "";
             }
 
-            // Đổ toàn bộ chuỗi HTML sạch vào thẻ hiển thị
+            // Ghi nội dung tổng thể ra màn hình card bài học
             document.getElementById('display').innerHTML = `
-                <h1>${lesson.title}</h1>
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 1px solid #f1f5f9; padding-bottom: 20px; margin-bottom: 30px;">
+                    <h1 style="border:none; margin:0; font-size:1.8rem; text-align:left;">${lesson.title}</h1>
+                    ${lesson.blocks ? `<span style="font-size:0.85rem; font-weight:800; background:#eef2ff; color:var(--primary); padding:6px 14px; border-radius:20px; flex-shrink: 0;">Slide ${currentSlide} / ${maxSlide}</span>` : ''}
+                </div>
                 <div class="article-body">${htmlContent}</div>
                 <div style="height: 10px;"></div>
             `;
 
-            // Xử lý trạng thái nút bấm "Bài trước / Bài tiếp"
+            // Khóa trạng thái nút bấm ở ranh giới đầu tiên và cuối cùng của giáo trình điện tử
             document.getElementById('nav-ui').style.display = 'flex';
-            document.getElementById('prev-btn').disabled = (index === 0);
-            document.getElementById('next-btn').disabled = (index === data.length - 1);
+            document.getElementById('prev-btn').disabled = (index === 0 && currentSlide === 1);
+            document.getElementById('next-btn').disabled = (index === data.length - 1 && currentSlide === maxSlide);
             
-            // Đổi active màu sắc thanh menu sidebar
+            // Thiết lập trạng thái nền menu sidebar
             document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
             const activeItem = document.getElementById(`menu-item-${index}`);
             if (activeItem) activeItem.classList.add('active');
             
-            // Cuộn màn hình lên đầu trang
+            // Đẩy góc nhìn cuộn về lại đỉnh trang bài học
             document.getElementById('main-view').scrollTo(0, 0);
 
-            // Ép KaTeX quét và vẽ lại công thức Toán/Lý dạng kí tự toán chuyên nghiệp
+            // Gọi thư viện kích hoạt xử lý và vẽ cấu trúc toán nhị phân, xoay chiều ba pha
             if (typeof renderMathInBody === "function") {
                 renderMathInBody(document.getElementById('display'));
             }
         }
 
-        // 4. ĐIỀU HƯỚNG CHUYỂN BÀI
-        function changeLesson(step) { showLesson(currentIndex + step); }
+        // 4. THUẬT TOÁN ĐIỀU HƯỚNG THÔNG MINH (LẬT SLIDE TRƯỚC KHI LẬT BÀI)
+        function changeLesson(step) {
+            const data = (currentGrade === "10") ? data10 : (currentGrade === "11") ? data11 : data12;
+            const lesson = data[currentIndex];
+            
+            let maxSlide = 1;
+            if (lesson.blocks && Array.isArray(lesson.blocks)) {
+                lesson.blocks.forEach(b => { if(b.slide > maxSlide) maxSlide = b.slide; });
+            }
 
-        // 5. BẬT TẮT CHẾ ĐỘ TRÌNH CHIẾU TRÊN LỚP
+            if (step === 1) { // BẤM NÚT TIẾP THEO
+                if (currentSlide < maxSlide) {
+                    showLesson(currentIndex, currentSlide + 1); // Đi tới slide kế tiếp trong cùng bài
+                } else if (currentIndex < data.length - 1) {
+                    showLesson(currentIndex + 1, 1);           // Hết slide thì nhảy sang bài mới, đặt slide về 1
+                }
+            } else if (step === -1) { // BẤM NÚT QUAY LẠI
+                if (currentSlide > 1) {
+                    showLesson(currentIndex, currentSlide - -1); // Lùi lại slide trước đó trong cùng bài
+                } else if (currentIndex > 0) {
+                    // Nếu lùi ở slide 1 -> tìm tổng số slide bài trước để nhảy vào đúng trang cuối của bài đó
+                    const prevLesson = data[currentIndex - 1];
+                    let prevMaxSlide = 1;
+                    if (prevLesson.blocks && Array.isArray(prevLesson.blocks)) {
+                        prevLesson.blocks.forEach(b => { if(b.slide > prevMaxSlide) prevMaxSlide = b.slide; });
+                    }
+                    showLesson(currentIndex - 1, prevMaxSlide);
+                }
+            }
+        }
+
+        // 5. CHẾ ĐỘ PHÓNG TO HỖ TRỢ GIẢNG DẠY TRÊN LỚP (PRESENTATION)
         function togglePresentation() {
             const isPres = document.body.classList.toggle('presentation-mode');
             const btn = document.querySelector('.btn-toggle-pres');
@@ -265,7 +321,13 @@
             if(isPres) document.getElementById('main-view').scrollTop = 0;
         }
 
-        // Kiểm tra phiên đăng nhập khi mở trang web
+        // Lắng nghe phím mũi tên Trái/Phải trên bàn phím để lật Slide nhanh như PowerPoint
+        document.addEventListener('keydown', (e) => {
+            if (localStorage.getItem('is_auth') !== 'true') return;
+            if (e.key === 'ArrowRight') { changeLesson(1); }
+            if (e.key === 'ArrowLeft') { changeLesson(-1); }
+        });
+
         window.onload = () => { if(localStorage.getItem('is_auth') === 'true') initApp(); }
     </script>
 </body>
