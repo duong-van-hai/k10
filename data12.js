@@ -182,7 +182,7 @@ const data12 = [
             // Slide 5: Định hướng ôn thi tốt nghiệp
             { slide: 5, type: "summary", title: "Khảo sát từ bộ 48 mã đề thi", text: "Nội dung Bài 5 không chiếm tỉ trọng lớn trong các mã đề từ 0601 đến 0648. Tuy nhiên, học sinh cần ghi nhớ bản chất phân loại năng lượng sạch để sẵn sàng xử lý các câu hỏi Đúng/Sai hoặc tình huống vận dụng thực tế mới." }
         ]
-    }
+    },
     // ==========================================
     // BÀI 6: MẠNG ĐIỆN SẢN XUẤT QUY MÔ NHỎ
     // ==========================================
@@ -439,7 +439,7 @@ const data12 = [
             // Slide 5: Biện pháp kiến trúc sinh thái xanh
             { slide: 5, type: "summary", title: "Vận dụng kiến thức vào kiến trúc nhà ở", text: "Một số biện pháp xây dựng công trình giúp tiết kiệm điện năng hiệu quả cho hộ gia đình bao gồm: Thiết kế nhà tận dụng tối đa hướng gió và ánh sáng tự nhiên; sử dụng vật liệu gạch cách nhiệt tốt; trồng nhiều cây xanh xung quanh nhà để giảm nhiệt độ môi trường, hạn chế sử dụng điều hòa." }
         ]
-    }
+    },
     // ==========================================
     // BÀI 13: KHÁI QUÁT VỀ KĨ THUẬT ĐIỆN TỬ
     // ==========================================
@@ -700,7 +700,7 @@ const data12 = [
             // Slide 5: Trả lời ngắn - Tính hệ số khuếch đại tuyệt đối
             { slide: 5, type: "summary", title: "Câu hỏi trả lời ngắn (Form mới)", text: "<strong>Câu hỏi:</strong> Một mạch khuếch đại đảo có cấu trúc điện trở đầu vào $R_1 = 2\\,\\text{k}\\Omega$ và điện trở đường hồi tiếp $R_2 = 10\\,\\text{k}\\Omega$. Hãy tính trị số hệ số khuếch đại điện áp $G$ của mạch (Chỉ lấy trị số tuyệt đối)?<br><strong>Giải nhanh:</strong> Hệ số khuếch đại tuyệt đối $|G| = \\frac{R_2}{R_1} = \\frac{10}{2} = 5$.<br>  <strong>Đáp án điền: 5</strong>" }
         ]
-    }
+    },
     // ==========================================
     // BÀI 20: THỰC HÀNH: MẠCH KHUẾCH ĐẠI ĐẢO
     // ==========================================
