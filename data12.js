@@ -25,19 +25,27 @@ const data12 = [
         ]
     },
     {
-        id: "cn12-bai-3",
+       id: "cn12-bai-3",
         title: "Bài 3: Mạch điện xoay chiều ba pha",
         blocks: [
-            { type: "definition", title: "Mạch điện xoay chiều 3 pha", text: "Bao gồm nguồn điện 3 pha, đường dây truyền tải và tải tiêu thụ 3 pha." },
-            { type: "text", text: "<strong>Cách đấu nối hình Sao (Y) và Tam giác (Δ):</strong>" },
-            {
-                type: "list",
-                items: [
-                    "<strong>Nối hình sao (Y):</strong> Dòng điện dây bằng dòng điện pha ($I_d = I_p$), điện áp dây bằng căn 3 lần điện áp pha ($U_d = \\sqrt{3}U_p$).",
-                    "<strong>Nối hình tam giác (Δ):</strong> Điện áp dây bằng điện áp pha ($U_d = U_p$), dòng điện dây bằng căn 3 lần dòng điện pha ($I_d = \\sqrt{3}I_p$)."
-                ]
-            },
-            { type: "warning", title: "Cảnh báo an toàn", text: "Cần đấu nối đúng tải theo quy định điện áp định mức để tránh nguy cơ sụt áp hoặc cháy cuộn dây thiết bị." }
+            // SLIDE 1
+            { slide: 1, type: "definition", title: "Mạch điện xoay chiều 3 pha", text: "Bao gồm nguồn điện 3 pha, đường dây truyền tải và tải tiêu thụ 3 pha." },
+            
+            // SLIDE 2
+            { slide: 2, type: "text", text: "<strong>Cách đấu nối hình Sao (Y) và Tam giác (Δ):</strong>" },
+            { slide: 2, type: "list", items: [
+                "<strong>Nối hình sao (Y):</strong> Dòng điện dây bằng dòng điện pha ($I_d = I_p$), điện áp dây bằng căn 3 lần điện áp pha ($U_d = \\sqrt{3}U_p$).",
+                "<strong>Nối hình tam giác (Δ):</strong> Điện áp dây bằng điện áp pha ($U_d = U_p$), dòng điện dây bằng căn 3 lần dòng điện pha ($I_d = \\sqrt{3}I_p$)."
+            ]},
+            
+            // SLIDE 3
+            { slide: 3, type: "warning", title: "Cảnh báo an toàn", text: "Cần đấu nối đúng tải theo quy định điện áp định mức để tránh nguy cơ sụt áp hoặc cháy cuộn dây thiết bị." },
+            
+            // SLIDE 4
+            { slide: 4, type: "text", text: "<strong>Ứng dụng thực tế:</strong> Mạch ba pha được sử dụng rộng rãi trong các nhà xưởng công nghiệp, vận hành máy bơm công suất lớn và hệ thống thang máy." },
+            
+            // SLIDE 5
+            { slide: 5, type: "summary", title: "Tóm tắt bài học", text: "Ghi nhớ kỹ 2 công thức biến đổi dòng và áp của mạch hình Sao và mạch hình Tam giác để làm bài tập kiểm tra." }
         ]
     },
     {
